@@ -104,8 +104,22 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String[] List = DataEntryWindow();
-        
+        int SwitchNumber = InterfaceMainMenu();
+
+        switch (SwitchNumber) {
+            case 1:
+                System.out.println("Copy 1");
+                break;
+            case 2:
+                String[] DataList = DataEntryWindow();
+                Writer(DataList[0], DataList[1]);
+                break;
+        }
+
+
+
+
+
 
         //Writer("Nandana","60");
         //readData();
