@@ -1,10 +1,12 @@
 package com.journaldev.csv.model;
 
+import java.util.Scanner;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -14,6 +16,41 @@ import java.util.List;
 
 
 public class Main {
+
+    public static String[] DataEntryWindow() {
+
+
+        String[] DataArray = new String[2];
+
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("Name: ");
+        DataArray[0] = scan.nextLine();
+
+        System.out.print("Age: ");
+        DataArray[1] = scan.nextLine();
+
+        return DataArray;
+    }
+
+    public static int InterfaceMainMenu() {
+
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("The Student Management System");
+        System.out.println("------------------------------");
+        System.out.println("1 - To view current database");
+        System.out.println("2 - To add new entry");
+        System.out.println("3 - To remove existing entry");
+
+        System.out.print("-->> ");
+
+        int SelectionOption = scan.nextInt();
+
+        System.out.println(SelectionOption);
+
+        return SelectionOption;
+    }
 
     public static void readData() {
         // specifying the CSV file path
@@ -67,8 +104,11 @@ public class Main {
 
     public static void main(String[] args) {
 
+        String[] List = DataEntryWindow();
+        
+
         //Writer("Nandana","60");
-        readData();
+        //readData();
 
         /*
         System.out.println("The Student Management System");
