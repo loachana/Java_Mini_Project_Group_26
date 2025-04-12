@@ -20,6 +20,33 @@ import java.util.*;
 
 public class Main {
 
+    public static void ModifyData() throws FileNotFoundException{
+
+        String database = "database.csv";
+
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("Line Number to Modify: ");
+        int EditLineNum = scan.nextInt();
+
+        try ( CSVReader reader = new CSVReader(new FileReader(database))
+        ) {
+            List<String[]> allRows = reader.readAll();
+
+            if (EditLineNum <= allRows.size()) {
+
+                System.out.println("Testing");
+            }
+
+        } catch( IOException e) {
+            e.printStackTrace();
+        } catch (CsvException e){
+            e.printStackTrace();
+        }
+
+
+    }
+
     public static void DeleteData() throws CsvException{
 
         String database = "database.csv";
@@ -90,7 +117,8 @@ public class Main {
         System.out.println("------------------------------");
         System.out.println("1 - To view current database");
         System.out.println("2 - To add new entry");
-        System.out.println("3 - To remove existing entry");
+        System.out.println("3 - To remove entry");
+        System.out.println("4 - To Modify entry");
         System.out.println("0 - To Abort");
 
         System.out.print("-->> ");
@@ -154,7 +182,7 @@ public class Main {
     }
 
 
-    public static void main(String[] args) throws CsvException {
+    public static void main(String[] args) throws CsvException, FileNotFoundException {
 
         while(true) {
             int SwitchNumber = InterfaceMainMenu();
@@ -176,6 +204,10 @@ public class Main {
                     break;
                 case 3:
                     DeleteData();
+                    break;
+                case 4:
+                    ModifyData();
+                    break;
             }
         }
 
