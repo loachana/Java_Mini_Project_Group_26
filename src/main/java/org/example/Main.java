@@ -14,8 +14,57 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.io.*;
+import java.util.*;
+
 
 public class Main {
+
+    public static void DeleteData() throws CsvException{
+
+        String database = "database.csv";
+
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("Line number to delete: ");
+        int LineNumber = scan.nextInt();
+
+
+
+        try(CSVReader reader = new CSVReader(new FileReader(database));
+        ){
+
+            List<String[]> allRows = reader.readAll();
+
+            //System.out.println(allRows.get(8)[1]);
+            //System.out.println(allRows.size());
+
+            if ( LineNumber <= allRows.size()) {
+
+                allRows.remove(LineNumber - 1);
+            } else {
+                System.out.println("Out of range");
+
+            }
+
+            try (
+                CSVWriter writer = new CSVWriter(new FileWriter(database));
+            ){
+
+                writer.writeAll(allRows);
+
+                System.out.println("Entry Deleted");
+
+            }
+
+        }catch (IOException e){
+
+            e.printStackTrace();
+
+        }
+
+
+    }
 
     public static String[] DataEntryWindow() {
 
@@ -37,22 +86,23 @@ public class Main {
 
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("The Student Management System");
+        System.out.println("\nThe Student Management System");
         System.out.println("------------------------------");
         System.out.println("1 - To view current database");
         System.out.println("2 - To add new entry");
         System.out.println("3 - To remove existing entry");
+        System.out.println("0 - To Abort");
 
         System.out.print("-->> ");
 
         int SelectionOption = scan.nextInt();
 
-        System.out.println(SelectionOption);
+        //System.out.println(SelectionOption);
 
         return SelectionOption;
     }
 
-    public static void readData() {
+    public static void ReadData() {
         // specifying the CSV file path
         String filePath = "database.csv";
 
@@ -95,6 +145,8 @@ public class Main {
 
             writer.writeNext(Details);
 
+            System.out.println("Data saved\n");
+
         }catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,20 +154,30 @@ public class Main {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CsvException {
 
-        int SwitchNumber = InterfaceMainMenu();
+        while(true) {
+            int SwitchNumber = InterfaceMainMenu();
 
-        switch (SwitchNumber) {
-            case 1:
-                System.out.println("Copy 1");
+
+            if (SwitchNumber == 0){
+
+                System.out.println("Program aborting");
                 break;
-            case 2:
-                String[] DataList = DataEntryWindow();
-                Writer(DataList[0], DataList[1]);
-                break;
+
+            }
+            switch (SwitchNumber) {
+                case 1:
+                    ReadData();
+                    break;
+                case 2:
+                    String[] DataList = DataEntryWindow();
+                    Writer(DataList[0], DataList[1]);
+                    break;
+                case 3:
+                    DeleteData();
+            }
         }
-
 
 
 
