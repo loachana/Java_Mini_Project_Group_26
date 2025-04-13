@@ -1,10 +1,13 @@
 package com.journaldev.csv.model;
 
 import java.util.Scanner;
+
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
+
+import de.vandermeer.asciitable.AsciiTable;
 
 import javax.xml.crypto.Data;
 import java.io.File;
@@ -26,8 +29,20 @@ public class Main {
 
         Scanner scan = new Scanner(System.in);
 
+
         System.out.print("Line Number to Modify: ");
         int EditLineNum = scan.nextInt();
+
+        String[] Updated = new String[2];
+
+        scan.nextLine();
+
+        System.out.print("New Name: ");
+        Updated[0] = scan.nextLine();
+
+        System.out.print("New Age: ");
+        Updated[1] = scan.nextLine();
+
 
         try ( CSVReader reader = new CSVReader(new FileReader(database))
         ) {
@@ -35,7 +50,14 @@ public class Main {
 
             if (EditLineNum <= allRows.size()) {
 
-                System.out.println("Testing");
+                allRows.set(EditLineNum - 1, Updated);
+            } else {
+                System.out.println("Error");
+            }
+
+            try(CSVWriter writer = new CSVWriter(new FileWriter(database));
+            ) {
+                writer.writeAll(allRows);
             }
 
         } catch( IOException e) {
@@ -147,13 +169,38 @@ public class Main {
             // creating the list (containing both header and data) using String array
             List<String[]> data = csvReader.readAll();
 
+
+            AsciiTable at = new AsciiTable();
+
+            /*
+            at.addRule();
+            at.addRow("1", "2");
+            at.addRule();
+            at.addRow("4", "5");
+            at.addRule();
+
+            String rend = at.render();
+            System.out.println(rend);
+            */
+
             // printing data
+            at.addRule();
+            at.addRow("NAME", "AGE");
             for (String[] row : data) {
-                for (String cell : row) {
-                    System.out.print(cell + " ");
-                }
-                System.out.println();
+                at.addRule();
+                at.addRow(row[0], row[1]);
+                //at.addRule();
+                //System.out.println(row[0] + row[1]);
+
+
+                //for (String TheList : row){
+                //    System.out.println(TheList);
+                //}
             }
+            at.addRule();
+            String rend = at.render();
+            System.out.println(rend);
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (CsvException e) {
