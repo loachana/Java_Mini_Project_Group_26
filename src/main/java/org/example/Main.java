@@ -30,30 +30,65 @@ public class Main {
         Scanner scan = new Scanner(System.in);
 
 
-        System.out.print("Line Number to Modify: ");
-        int EditLineNum = scan.nextInt();
+        System.out.print("ID to Modify: ");
+        int EditID = scan.nextInt();
 
-        String[] Updated = new String[2];
+        String[] Updated = new String[3];
 
         scan.nextLine();
 
+        /*
         System.out.print("New Name: ");
-        Updated[0] = scan.nextLine();
-
-        System.out.print("New Age: ");
         Updated[1] = scan.nextLine();
 
+        System.out.print("New Age: ");
+        Updated[2] = scan.nextLine();
+        */
 
         try ( CSVReader reader = new CSVReader(new FileReader(database))
         ) {
             List<String[]> allRows = reader.readAll();
 
-            if (EditLineNum <= allRows.size()) {
+            //String CurrentID = allRows.get(EditID-1)[0];
 
-                allRows.set(EditLineNum - 1, Updated);
-            } else {
-                System.out.println("Error");
+            //System.out.println(CurrentID);
+
+
+            //for (String[] row : data)
+
+            int RowIndex = 0;
+
+            for (String[] row : allRows){
+                //System.out.println(row[0]);
+
+
+                int IntRow = Integer.parseInt(row[0]);
+                if(IntRow == EditID) {
+                    //System.out.println(row[1]);
+
+                    Updated[0] = String.valueOf(EditID);
+
+                    System.out.print("New Name: ");
+                    Updated[1] = scan.nextLine();
+
+                    System.out.print("New Age: ");
+                    Updated[2] = scan.nextLine();
+
+                    allRows.get(RowIndex)[0] = Updated[0];
+                    allRows.get(RowIndex)[1] = Updated[1];
+                    allRows.get(RowIndex)[2] = Updated[2];
+
+                }
+                //System.out.println(RowIndex);
+
+                RowIndex = RowIndex + 1;
+
             }
+
+
+            //Updated[0] = CurrentID;
+
+            //allRows.set(EditID - 1, Updated);
 
             try(CSVWriter writer = new CSVWriter(new FileWriter(database));
             ) {
@@ -75,8 +110,8 @@ public class Main {
 
         Scanner scan = new Scanner(System.in);
 
-        System.out.print("Line number to delete: ");
-        int LineNumber = scan.nextInt();
+        System.out.print("ID to delete: ");
+        int DeleteID = scan.nextInt();
 
 
 
@@ -85,9 +120,29 @@ public class Main {
 
             List<String[]> allRows = reader.readAll();
 
+            int RowIndex = 0;
+
+            for (String[] row : allRows){
+                //System.out.println(row[0]);
+
+
+                int IntRow = Integer.parseInt(row[0]);
+                if(IntRow == DeleteID) {
+                    //System.out.println(row[1]);
+
+                    allRows.remove(RowIndex);
+
+                }
+                //System.out.println(RowIndex);
+
+                RowIndex = RowIndex + 1;
+
+            }
+
+
             //System.out.println(allRows.get(8)[1]);
             //System.out.println(allRows.size());
-
+            /*
             if ( LineNumber <= allRows.size()) {
 
                 allRows.remove(LineNumber - 1);
@@ -95,7 +150,7 @@ public class Main {
                 System.out.println("Out of range");
 
             }
-
+            */
             try (
                 CSVWriter writer = new CSVWriter(new FileWriter(database));
             ){
@@ -322,7 +377,7 @@ public class Main {
             int SwitchNumber = InterfaceMainMenu();
 
 
-            if (SwitchNumber == 0){
+            if (SwitchNumber == 0) {
 
                 System.out.println("Program aborting");
                 break;
@@ -342,8 +397,12 @@ public class Main {
                 case 4:
                     ModifyData();
                     break;
+                default:
+                    System.out.println("--Input Error--");
             }
+
         }
+
 
 
 
