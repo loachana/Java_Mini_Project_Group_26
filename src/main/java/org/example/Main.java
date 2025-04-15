@@ -8,6 +8,7 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
 
 import de.vandermeer.asciitable.AsciiTable;
+import de.vandermeer.skb.interfaces.transformers.textformat.TextAlignment;
 
 import javax.xml.crypto.Data;
 import java.io.File;
@@ -22,6 +23,63 @@ import java.util.*;
 
 
 public class Main {
+
+    public static void SearchByID() {
+
+        String database = "database.csv";
+
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("ID: ");
+
+        int UniqueID = scan.nextInt();
+
+        try ( CSVReader reader = new CSVReader(new FileReader(database))
+        ) {
+            List<String[]> allRows = reader.readAll();
+
+            //System.out.println(allRows.get(0)[0]);
+
+            AsciiTable at = new AsciiTable();
+
+            at.addRule();
+            at.addRow("ID", "NAME", "AGE");
+
+            for (String[] row: allRows) {
+
+                //System.out.println(row[0]);
+
+                int IntRow = Integer.parseInt(row[0]);
+
+                if(UniqueID == IntRow) {
+
+                    //System.out.println(row[0]);
+                    //System.out.println(row[1]);
+                    //System.out.println(row[2]);
+
+                    at.addRule();
+                    at.addRow(row[0], row[1], row[2]);
+                    at.addRule();
+
+                    at.setTextAlignment(TextAlignment.CENTER);
+
+                    String rend = at.render();
+                    System.out.println(rend);
+
+                }
+
+            }
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (CsvException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
 
     public static void ModifyData() throws FileNotFoundException{
 
@@ -130,7 +188,8 @@ public class Main {
                 if(IntRow == DeleteID) {
                     //System.out.println(row[1]);
 
-                    allRows.remove(RowIndex);
+                    //System.out.println("yay");
+                    allRows.remove(1);
 
                 }
                 //System.out.println(RowIndex);
@@ -260,11 +319,12 @@ public class Main {
 
         System.out.println("\nThe Student Management System");
         System.out.println("------------------------------");
-        System.out.println("1 - To view current database");
-        System.out.println("2 - To add new entry");
-        System.out.println("3 - To remove entry");
-        System.out.println("4 - To Modify entry");
-        System.out.println("0 - To Abort");
+        System.out.println("1 - View Current Database");
+        System.out.println("2 - Add New Entry");
+        System.out.println("3 - Remove Entry");
+        System.out.println("4 - Modify Entry");
+        System.out.println("5 - Search by ID");
+        System.out.println("0 - Abort");
 
         System.out.print("-->> ");
 
@@ -322,6 +382,9 @@ public class Main {
                 //}
             }
             at.addRule();
+
+            at.setTextAlignment(TextAlignment.CENTER);
+
             String rend = at.render();
             System.out.println(rend);
 
@@ -396,6 +459,9 @@ public class Main {
                     break;
                 case 4:
                     ModifyData();
+                    break;
+                case 5:
+                    SearchByID();
                     break;
                 default:
                     System.out.println("--Input Error--");
