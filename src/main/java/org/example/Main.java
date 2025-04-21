@@ -1,5 +1,6 @@
 package com.journaldev.csv.model;
 
+
 import java.util.Scanner;
 
 import com.opencsv.CSVReader;
@@ -43,7 +44,7 @@ public class Main {
             AsciiTable at = new AsciiTable();
 
             at.addRule();
-            at.addRow("ID", "NAME", "AGE");
+            at.addRow("ID", "FIRST NAME","SURNAME", "AGE", "SCHOOL GRADE", "Birth Day [MM/DD]", "GENDER [M/F]");
 
             for (String[] row: allRows) {
 
@@ -58,7 +59,7 @@ public class Main {
                     //System.out.println(row[2]);
 
                     at.addRule();
-                    at.addRow(row[0], row[1], row[2]);
+                    at.addRow(row[0], row[1], row[2], row[3], row[4], row[5], row[6]);
                     at.addRule();
 
                     at.setTextAlignment(TextAlignment.CENTER);
@@ -91,7 +92,7 @@ public class Main {
         System.out.print("ID to Modify: ");
         int EditID = scan.nextInt();
 
-        String[] Updated = new String[3];
+        String[] Updated = new String[7];
 
         scan.nextLine();
 
@@ -126,15 +127,31 @@ public class Main {
 
                     Updated[0] = String.valueOf(EditID);
 
-                    System.out.print("New Name: ");
+                    System.out.print("New First Name: ");
                     Updated[1] = scan.nextLine();
 
-                    System.out.print("New Age: ");
+                    System.out.print("New Surname: ");
                     Updated[2] = scan.nextLine();
+
+                    System.out.print("New Age: ");
+                    Updated[3] = scan.nextLine();
+
+                    System.out.print("New School Grade: ");
+                    Updated[4] = scan.nextLine();
+
+                    System.out.print("New Birth Day [MM/DD]: ");
+                    Updated[5] = scan.nextLine();
+
+                    System.out.print("New Gender [M/F]: ");
+                    Updated[6] = scan.nextLine();
 
                     allRows.get(RowIndex)[0] = Updated[0];
                     allRows.get(RowIndex)[1] = Updated[1];
                     allRows.get(RowIndex)[2] = Updated[2];
+                    allRows.get(RowIndex)[3] = Updated[3];
+                    allRows.get(RowIndex)[4] = Updated[4];
+                    allRows.get(RowIndex)[5] = Updated[5];
+                    allRows.get(RowIndex)[6] = Updated[6];
 
                 }
                 //System.out.println(RowIndex);
@@ -189,7 +206,7 @@ public class Main {
                     //System.out.println(row[1]);
 
                     //System.out.println("yay");
-                    allRows.remove(1);
+                    allRows.remove(RowIndex);
 
                 }
                 //System.out.println(RowIndex);
@@ -263,7 +280,7 @@ public class Main {
 
         //System.out.println(LastID);
 
-        String[] DataArray = new String[3];
+        String[] DataArray = new String[7];
 
         Scanner scan = new Scanner(System.in);
 
@@ -279,11 +296,23 @@ public class Main {
 
         DataArray[0] = NewID;
 
-        System.out.print("Name: ");
+        System.out.print("First Name: ");
         DataArray[1] = scan.nextLine();
 
-        System.out.print("Age: ");
+        System.out.print("Surname: ");
         DataArray[2] = scan.nextLine();
+
+        System.out.print("Age: ");
+        DataArray[3] = scan.nextLine();
+
+        System.out.print("School Grade: ");
+        DataArray[4] = scan.nextLine();
+
+        System.out.print("Birth Day [MM/DD]: ");
+        DataArray[5] = scan.nextLine();
+
+        System.out.print("Gender [M/F]: ");
+        DataArray[6] = scan.nextLine();
 
         return DataArray;
     }
@@ -335,6 +364,7 @@ public class Main {
         return SelectionOption;
     }
 
+
     public static void ReadData() {
         // specifying the CSV file path
         String filePath = "database.csv";
@@ -368,11 +398,11 @@ public class Main {
 
             // printing data
             at.addRule();
-            at.addRow("ID", "NAME", "AGE");
+            at.addRow("ID", "FIRST NAME", "SURNAME", "AGE", "SCHOOL GRADE", "BIRTH DAY [MM/DD]", "GENDER [M/F]");
             for (String[] row : data) {
 
                 at.addRule();
-                at.addRow(row[0], row[1], row[2]);
+                at.addRow(row[0], row[1], row[2], row[3], row[4], row[5], row[6]);
                 //at.addRule();
                 //System.out.println(row[0] + row[1]);
 
@@ -398,13 +428,13 @@ public class Main {
 
 
 
-    public static void Writer(String ID, String name, String age) {
+    public static void Writer(String ID, String FirstName, String Surname, String age, String SchoolGrade, String BirthDay, String Gender) {
 
         String csvFile = "database.csv";
 
         try (CSVWriter writer = new CSVWriter(new FileWriter(csvFile, true))) {
 
-            String[] Details = {ID, name, age};
+            String[] Details = {ID, FirstName, Surname, age, SchoolGrade, BirthDay, Gender};
 
             writer.writeNext(Details);
 
@@ -452,7 +482,7 @@ public class Main {
                     break;
                 case 2:
                     String[] DataList = DataEntryWindow();
-                    Writer(DataList[0], DataList[1], DataList[2]);
+                    Writer(DataList[0], DataList[1], DataList[2], DataList[3], DataList[4], DataList[5], DataList[6]);
                     break;
                 case 3:
                     DeleteData();
